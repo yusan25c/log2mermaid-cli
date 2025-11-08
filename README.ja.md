@@ -20,13 +20,12 @@ python3 log2mermaid.py LOG_FILE MATCH_CSV > diagram.mmd
 CSVフォーマット
 
 - 必須カラム: `title`, `match`, `src`, `dst`
-- 例:
+- `match` は正規表現（Pythonの `re.search` で各ログ行に適用）
+- 例（example/match.csv と同じ）:
   | title | match | src | dst |
   | ---- | ---- | ---- | ---- |
-  | hogeFunc1 | Component1: hoge function exec | Comp1 | Comp2 |
-  | hogeFunc2 | Component2: hoge function exec | Comp2 | Comp1 |
-- 詳しくはexample内にあるmatch.csvを参照してください。
-
+  | hogeFunc1 | Component1 func: | API Server | Client |
+  | hogeFunc2 | Component2 func:.* str=abc | Client | API Server |
 
 注意事項
 

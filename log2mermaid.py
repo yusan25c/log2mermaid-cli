@@ -31,7 +31,7 @@ def main() -> None:
     log_file = sys.argv[1]
     conv_file = sys.argv[2]
 
-    # マッピングの読み込み
+    # マッピングの読み込み（match は正規表現として扱う）
     try:
         with open(conv_file, 'r', encoding='utf-8', newline='') as f:
             reader = csv.DictReader(f)
@@ -48,7 +48,12 @@ def main() -> None:
                 src = (r.get('src') or '').strip()
                 dst = (r.get('dst') or '').strip()
                 if title and word and src and dst:
-                    conv_list.append({'title': title, 'match': word, 'src': src, 'dst': dst})
+                    try:
+                        pat = re.compile(word)
+                    except re.error as e:
+                        print(f"Error: invalid regex in match: {word} ({e})", file=sys.stderr)
+                        sys.exit(2)
+                    conv_list.append({'title': title, 'pattern': pat, 'src': src, 'dst': dst})
     except FileNotFoundError:
         print(f'Error: CSV not found: {conv_file}', file=sys.stderr)
         sys.exit(2)
@@ -64,7 +69,7 @@ def main() -> None:
         with open(log_file, 'r', encoding='utf-8', errors='replace') as f:
             for line in f:
                 for c in conv_list:
-                    if c['match'] in line:
+                    if c['pattern'].search(line):
                         src = c['src']
                         dst = c['dst']
                         if src not in seen:

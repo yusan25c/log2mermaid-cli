@@ -1,7 +1,6 @@
 Nov  2 12:34:56 : [12345678.012345] hogehoge function exec
-Nov  2 12:34:56 : [12345678.012345] Component1: hoge function exec
+Nov  2 12:34:56 : [12345678.012345] Component1 func:1245 hogehoge val 1
 Nov  2 12:34:56 : [12345678.012345] hogehoge2 func exec
-Nov  2 12:34:56 : [12345678.012345] Component1: hoge function ret: 0
-Nov  2 12:34:56 : [12345678.012345] Component2: hoge function exec
+Nov  2 12:34:56 : [12345678.012345] Component2 func:1245 str=abc val 1
+Nov  2 12:34:56 : [12345678.012345] Component2 func:1245 str=def val 2
 Nov  2 12:34:56 : [12345678.012345] hogehoge function ret: 0
-Nov  2 12:34:56 : [12345678.012345] Component2: hoge function ret: -1

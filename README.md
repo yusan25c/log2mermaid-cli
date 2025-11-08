@@ -20,12 +20,13 @@ Sample
 CSV format
 
 - Required columns: `title`, `match`, `src`, `dst`
-- Example:
-  | title | match | src | dst |
-  | ---- | ---- | ---- | ---- |
-  | hogeFunc1 | Component1: hoge function exec | Comp1 | Comp2 |
-  | hogeFunc2 | Component2: hoge function exec | Comp2 | Comp1 |
-- For details, see `example/match.csv`.
+- `match` is a regular expression (Python `re.search`) applied to each log line.
+- Example (same as example/match.csv):
+
+  | title     | match                      | src        | dst         |
+  | ----      | ----                       | ----       | ----        |
+  | hogeFunc1 | Component1 func:           | API Server | Client      |
+  | hogeFunc2 | Component2 func:.* str=abc | Client     | API Server  |
 
 Notes
 

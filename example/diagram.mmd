@@ -2,6 +2,6 @@ sequenceDiagram
     participant P1 as "API Server"
     participant Client
     P1 ->> Client: hogeFunc1
-    Note over P1,Client: Nov  2 12:34:56 : [12345678.012345] Component1: hoge function exec
+    Note over P1,Client: Nov  2 12:34:56 : [12345678.012345] Component1 func:1245 hogehoge val 1
     Client ->> P1: hogeFunc2
-    Note over Client,P1: Nov  2 12:34:56 : [12345678.012345] Component2: hoge function exec
+    Note over Client,P1: Nov  2 12:34:56 : [12345678.012345] Component2 func:1245 str=abc val 1
