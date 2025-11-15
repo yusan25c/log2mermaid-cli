@@ -95,6 +95,7 @@ def main() -> None:
 
     # Mermaid出力
     print('sequenceDiagram')
+    print('    autonumber')
     for p in participants:
         a = alias[p]
         if a == p:
