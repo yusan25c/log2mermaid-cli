@@ -8,7 +8,7 @@ log2mermaid
 1. pythonをインストールする
 2. 以下のコマンドで実行する
 ``` sh
-python3 log2mermaid.py LOG_FILE MATCH_CSV > diagram.mmd
+python3 log2mermaid.py [--note] LOG_FILE MATCH_CSV > diagram.mmd
 ```
 
 サンプル
@@ -29,5 +29,5 @@ CSVフォーマット
 
 注意事項
 
-- ログの内容がそのまま出力に含まれます。機密情報が含まれる場合はご注意ください。
-
+- デフォルトでは元ログはMermaidのNoteとして出力されません（メッセージ行のみ出力されます）。
+- `--note` オプションを付けると、MermaidのNoteとして元ログも出力されます。機密情報が含まれる場合はご注意ください。

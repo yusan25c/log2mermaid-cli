@@ -24,12 +24,19 @@ def _needs_alias(name: str) -> bool:
 
 
 def main() -> None:
-    if len(sys.argv) != 3:
-        print('Usage: log2mermaid.py LOG_FILE MATCH_CSV', file=sys.stderr)
+    args = sys.argv[1:]
+
+    show_note = False
+    if '--note' in args:
+        show_note = True
+        args = [a for a in args if a != '--note']
+
+    if len(args) != 2:
+        print('Usage: log2mermaid.py [--note] LOG_FILE MATCH_CSV', file=sys.stderr)
         sys.exit(1)
 
-    log_file = sys.argv[1]
-    conv_file = sys.argv[2]
+    log_file = args[0]
+    conv_file = args[1]
 
     # マッピングの読み込み（match は正規表現として扱う）
     try:
@@ -102,20 +109,23 @@ def main() -> None:
             print(f'    participant {a}')
         else:
             print(f'    participant {a} as "{_escape(p)}"')
-    # Noteの最大文字数（0で無制限）。環境変数 LOG2M_NOTE_MAX で上書き可。
-    try:
-        note_max = int(os.getenv('LOG2M_NOTE_MAX', str(DEFAULT_LOG2M_NOTE_MAX)))
-    except ValueError:
-        note_max = DEFAULT_LOG2M_NOTE_MAX
+    note_max = None
+    if show_note:
+        # Noteの最大文字数（0で無制限）。環境変数 LOG2M_NOTE_MAX で上書き可。
+        try:
+            note_max = int(os.getenv('LOG2M_NOTE_MAX', str(DEFAULT_LOG2M_NOTE_MAX)))
+        except ValueError:
+            note_max = DEFAULT_LOG2M_NOTE_MAX
 
     for src, dst, title, line in matches:
         s = alias[src]
         d = alias[dst]
         print(f'    {s} ->> {d}: {_escape(title)}')
-        note = _escape(line)
-        if note_max > 0 and len(note) > note_max:
-            note = note[: max(0, note_max - 1)] + '…'
-        print(f'    Note over {s},{d}: {note}')
+        if show_note:
+            note = _escape(line)
+            if note_max is not None and note_max > 0 and len(note) > note_max:
+                note = note[: max(0, note_max - 1)] + '…'
+            print(f'    Note over {s},{d}: {note}')
 
 
 if __name__ == '__main__':
