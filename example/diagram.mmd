@@ -1,8 +1,11 @@
 sequenceDiagram
     autonumber
-    participant P1 as "API Server"
-    participant Client
-    P1 ->> Client: hogeFunc1
-    Note over P1,Client: Nov  2 12:34:56 : [12345678.012345] Component1 func:1245 hogehoge val 1
-    Client ->> P1: hogeFunc2
-    Note over Client,P1: Nov  2 12:34:56 : [12345678.012345] Component2 func:1245 str=abc val 1
+    participant Sample1
+    participant Sample2
+    participant Sample3
+    Sample1 ->> Sample2: requestMessage<br/>L:3
+    Note over Sample2: State:Executing<br/>L:5
+    Sample2 ->> Sample3: requestMessage<br/>L:7
+    Note over Sample3: state:Executing<br/>L:8
+    Sample3 ->> Sample2: notifyMessage<br/>L:11
+    Sample2 ->> Sample1: notifyMessage<br/>L:12

@@ -20,13 +20,18 @@ Sample
 CSV format
 
 - Required columns: `title`, `match`, `src`, `dst`
+- Optional column: `kind`
+  - If `kind` is `note`, that row is treated as a "note row".
+  - Note rows represent various events such as state changes. No `src -> dst` message is emitted; instead, a Mermaid Note is shown over the lifelines.
+  - If `kind` is omitted or not `note`, the row is treated as a normal message (arrow).
 - `match` is a regular expression (Python `re.search`) applied to each log line.
-- Example (same as example/match.csv):
+- Example (excerpt from `example/match.csv`):
 
-  | title     | match                      | src        | dst         |
-  | ----      | ----                       | ----       | ----        |
-  | hogeFunc1 | Component1 func:           | API Server | Client      |
-  | hogeFunc2 | Component2 func:.* str=abc | Client     | API Server  |
+  | title          | match                        | src     | dst     | kind    |
+  | ----           | ----                         | ----    | ----    | ----    |
+  | requestMessage | Sample1 .* requestMessage    | Sample1 | Sample2 | message |
+  | notifyMessage  | Sample2 .* notifyMessage     | Sample2 | Sample1 | message |
+  | State:Executing| Sample2 State:.* -> 1        | Sample2 |         | note    |
 
 Notes
 

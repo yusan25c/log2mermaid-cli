@@ -1,3 +1,7 @@
-title,match,src,dst
-hogeFunc1,Component1 func:,API Server,Client
-hogeFunc2,Component2 func:.* str=abc,Client,API Server
+title,match,src,dst,kind
+requestMessage,Sample1 .* requestMessage,Sample1,Sample2,message
+notifyMessage,Sample2 .* notifyMessage,Sample2,Sample1,message
+requestMessage,Sample2 .* requestMessage,Sample2,Sample3,message
+notifyMessage,Sample3 .* notifyMessage,Sample3,Sample2,message
+State:Executing,Sample2 State:.* -> 1,Sample2,,note
+state:Executing,Sample3 State:.* -> 1,Sample3,,note

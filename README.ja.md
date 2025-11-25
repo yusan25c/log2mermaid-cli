@@ -20,12 +20,17 @@ python3 log2mermaid.py [--note] LOG_FILE MATCH_CSV > diagram.mmd
 CSVフォーマット
 
 - 必須カラム: `title`, `match`, `src`, `dst`
+- 任意カラム: `kind`
+  - `kind` が `note` の場合、その行は「ノート行」として扱われます。
+  - ノート行は状態変化などのさまざまなイベントを表し、`src -> dst` のメッセージは出力されず、MermaidのNoteとしてライフライン上に表示されます。
+  - `kind` が指定されていない場合や `note` 以外の値の場合は、通常のメッセージ行（矢印）として扱われます。
 - `match` は正規表現（Pythonの `re.search` で各ログ行に適用）
-- 例（example/match.csv と同じ）:
-  | title | match | src | dst |
-  | ---- | ---- | ---- | ---- |
-  | hogeFunc1 | Component1 func: | API Server | Client |
-  | hogeFunc2 | Component2 func:.* str=abc | Client | API Server |
+- 例（`example/match.csv` の抜粋）:
+  | title          | match                        | src     | dst     | kind    |
+  | ----           | ----                         | ----    | ----    | ----    |
+  | requestMessage | Sample1 .* requestMessage    | Sample1 | Sample2 | message |
+  | notifyMessage  | Sample2 .* notifyMessage     | Sample2 | Sample1 | message |
+  | State:Executing| Sample2 State:.* -> 1        | Sample2 |         | note    |
 
 注意事項
 

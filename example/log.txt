@@ -1,6 +1,13 @@
-Nov  2 12:34:56 : [12345678.012345] hogehoge function exec
-Nov  2 12:34:56 : [12345678.012345] Component1 func:1245 hogehoge val 1
-Nov  2 12:34:56 : [12345678.012345] hogehoge2 func exec
-Nov  2 12:34:56 : [12345678.012345] Component2 func:1245 str=abc val 1
-Nov  2 12:34:56 : [12345678.012345] Component2 func:1245 str=def val 2
-Nov  2 12:34:56 : [12345678.012345] hogehoge function ret: 0
+Nov  2 12:34:56 : [12345678.012345] hogehoge1
+Nov  2 12:34:56 : [12345678.012345] hogehoge2
+Nov  2 12:34:56 : [12345678.012345] Sample1 func:1245 requestMessage msg:helloWorld
+Nov  2 12:34:56 : [12345678.012345] hogehoge3
+Nov  2 12:34:56 : [12345678.012345] Sample2 State:0 -> 1
+Nov  2 12:34:56 : [12345678.012345] hogehoge4
+Nov  2 12:34:56 : [12345678.012345] Sample2 func:1245 requestMessage msg:helloWorld
+Nov  2 12:34:56 : [12345678.012345] Sample3 State:0 -> 1
+Nov  2 12:34:56 : [12345678.012345] hogehoge5
+Nov  2 12:34:56 : [12345678.012345] hogehoge6
+Nov  2 12:34:56 : [12345678.012345] Sample3 func:1245 notifyMessage val:0
+Nov  2 12:34:56 : [12345678.012345] Sample2 func:1245 notifyMessage val:0
+Nov  2 12:34:56 : [12345678.012345] hogehoge7
