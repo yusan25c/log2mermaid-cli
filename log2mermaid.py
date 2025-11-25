@@ -5,6 +5,7 @@ import sys
 import csv
 import re
 
+
 def _escape(text: str) -> str:
     # Minimal escaping to keep Mermaid stable
     return (
@@ -21,6 +22,30 @@ def _needs_alias(name: str) -> bool:
 def _adjust_title(title: str, line: int) -> str:
     return f"{_escape(title)}<br/>L:{line}"
 
+
+def _detect_csv_encoding(path: str) -> str:
+    try:
+        with open(path, 'rb') as bf:
+            data = bf.read()
+    except FileNotFoundError:
+        print(f'Error: CSV not found: {path}', file=sys.stderr)
+        sys.exit(2)
+
+    last_error = None
+    for encoding in ('utf-8', 'cp932'):
+        try:
+            data.decode(encoding)
+            return encoding
+        except UnicodeDecodeError as e:
+            last_error = e
+
+    if last_error is not None:
+        print('Error: failed to decode CSV as UTF-8 or CP932 (Shift-JIS)', file=sys.stderr)
+        sys.exit(2)
+
+    print('Error: failed to detect CSV encoding', file=sys.stderr)
+    sys.exit(2)
+
 def main() -> None:
     args = sys.argv[1:]
 
@@ -31,9 +56,12 @@ def main() -> None:
     log_file = args[0]
     conv_file = args[1]
 
+    csv_encoding = _detect_csv_encoding(conv_file)
+
     # マッピングの読み込み（match は正規表現として扱う）
+    conv_list = []
     try:
-        with open(conv_file, 'r', encoding='utf-8', newline='') as f:
+        with open(conv_file, 'r', encoding=csv_encoding, newline='') as f:
             reader = csv.DictReader(f)
             headers = set(reader.fieldnames or [])
             required = {'title', 'match', 'src', 'dst'}
@@ -41,7 +69,6 @@ def main() -> None:
                 print('Error: CSV header must include title, match, src, dst', file=sys.stderr)
                 sys.exit(2)
 
-            conv_list = []
             for r in reader:
                 title = (r.get('title') or '').strip()
                 word = (r.get('match') or '').strip()
@@ -58,9 +85,8 @@ def main() -> None:
                 if not (title and word and src):
                     continue
                 # message 行では dst も必須。note 行では dst は任意（src のみでも可）
-                if kind == 'message':
-                    if not dst:
-                        continue
+                if kind == 'message' and not dst:
+                    continue
 
                 try:
                     pat = re.compile(word)
@@ -80,7 +106,7 @@ def main() -> None:
         print(f'Error: CSV not found: {conv_file}', file=sys.stderr)
         sys.exit(2)
     except Exception as e:
-        print(f'Error: failed to read CSV: {e}', file=sys.stderr)
+        print(f'Error: failed to read CSV ({csv_encoding}): {e}', file=sys.stderr)
         sys.exit(2)
 
     # ログを逐次走査してマッチを収集
