@@ -4,10 +4,6 @@
 import sys
 import csv
 import re
-import os
-
-DEFAULT_LOG2M_NOTE_MAX = 160
-
 
 def _escape(text: str) -> str:
     # Minimal escaping to keep Mermaid stable
@@ -28,13 +24,8 @@ def _adjust_title(title: str, line: int) -> str:
 def main() -> None:
     args = sys.argv[1:]
 
-    show_note = False
-    if '--note' in args:
-        show_note = True
-        args = [a for a in args if a != '--note']
-
     if len(args) != 2:
-        print('Usage: log2mermaid.py [--note] LOG_FILE MATCH_CSV', file=sys.stderr)
+        print('Usage: log2mermaid.py LOG_FILE MATCH_CSV', file=sys.stderr)
         sys.exit(1)
 
     log_file = args[0]
@@ -144,14 +135,6 @@ def main() -> None:
             print(f'    participant {a}')
         else:
             print(f'    participant {a} as "{_escape(p)}"')
-    note_max = None
-    if show_note:
-        # Noteの最大文字数（0で無制限）。環境変数 LOG2M_NOTE_MAX で上書き可。
-        try:
-            note_max = int(os.getenv('LOG2M_NOTE_MAX', str(DEFAULT_LOG2M_NOTE_MAX)))
-        except ValueError:
-            note_max = DEFAULT_LOG2M_NOTE_MAX
-
     for i, src, dst, title, line, kind in matches:
         s = alias[src]
         d = alias.get(dst) if dst else None
@@ -169,16 +152,6 @@ def main() -> None:
             if not has_dst:
                 d = s
             print(f'    {s} ->> {d}: {_adjust_title(title, i)}')
-
-        # --note オプション指定時は、元ログ行をNoteとして出力（note 行／メッセージ行どちらも対象）
-        if show_note:
-            note = _escape(line)
-            if note_max is not None and note_max > 0 and len(note) > note_max:
-                note = note[: max(0, note_max - 1)] + '…'
-            if has_dst:
-                print(f'    Note over {s},{d}: {note} L:{i}')
-            else:
-                print(f'    Note over {s}: {note} L{i}')
 
 
 if __name__ == '__main__':

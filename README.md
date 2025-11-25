@@ -8,7 +8,7 @@ Quick start
 1. Install Python 3
 2. Run the command below
 ```sh
-python3 log2mermaid.py [--note] LOG_FILE MATCH_CSV > diagram.mmd
+python3 log2mermaid.py LOG_FILE MATCH_CSV > diagram.mmd
 ```
 
 Sample
@@ -32,11 +32,6 @@ CSV format
   | requestMessage | Sample1 .* requestMessage    | Sample1 | Sample2 | message |
   | notifyMessage  | Sample2 .* notifyMessage     | Sample2 | Sample1 | message |
   | State:Executing| Sample2 State:.* -> 1        | Sample2 |         | note    |
-
-Notes
-
-- By default, original log lines are not emitted as Mermaid Notes (only the message lines are output).
-- If you add the `--note` option, original log lines are emitted as Mermaid Notes. Be careful with sensitive information.
 
 Japanese guide
 
